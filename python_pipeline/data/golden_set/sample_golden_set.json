@@ -1,0 +1,58 @@
+[
+  {
+    "id": "REV-001",
+    "text": "The technician arrived 45 minutes late and didn't have the required replacement filter for the AC.",
+    "category": "Punctuality & Equipment",
+    "sentiment": "Negative",
+    "urgency": "High"
+  },
+  {
+    "id": "REV-002",
+    "text": "Amazing deep cleaning service! The team was super polite, thorough, and cleaned all hard-to-reach corners.",
+    "category": "Service Quality",
+    "sentiment": "Positive",
+    "urgency": "Low"
+  },
+  {
+    "id": "REV-003",
+    "text": "I was charged extra INR 500 without prior estimate or explanation on the invoice.",
+    "category": "Pricing & Transparency",
+    "sentiment": "Negative",
+    "urgency": "High"
+  },
+  {
+    "id": "REV-004",
+    "text": "Good haircut at home, though the stylist could have used cleaner styling sheets.",
+    "category": "Hygiene & Safety",
+    "sentiment": "Neutral",
+    "urgency": "Medium"
+  },
+  {
+    "id": "REV-005",
+    "text": "Instant booking confirmed and professional arrived exactly on time with full uniform and kit.",
+    "category": "Punctuality & Equipment",
+    "sentiment": "Positive",
+    "urgency": "Low"
+  },
+  {
+    "id": "REV-006",
+    "text": "Plumber resolved the sink leakage in 15 minutes. Very efficient and courteous.",
+    "category": "Service Quality",
+    "sentiment": "Positive",
+    "urgency": "Low"
+  },
+  {
+    "id": "REV-007",
+    "text": "Customer support took 3 days to respond to my refund request for a cancelled slot.",
+    "category": "Customer Support",
+    "sentiment": "Negative",
+    "urgency": "High"
+  },
+  {
+    "id": "REV-008",
+    "text": "App kept crashing when I tried to pay using UPI during the checkout step.",
+    "category": "App & Tech Experience",
+    "sentiment": "Negative",
+    "urgency": "Medium"
+  }
+]

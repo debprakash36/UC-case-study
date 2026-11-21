@@ -1,0 +1,140 @@
+{
+  "summary": {
+    "total_samples": 8,
+    "category_accuracy": 1.0,
+    "category_macro_f1": 1.0,
+    "sentiment_accuracy": 0.375,
+    "sentiment_macro_f1": 0.3556,
+    "mismatches_count": 5
+  },
+  "category_metrics": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "total_samples": 8,
+    "per_class": {
+      "App & Tech Experience": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 1
+      },
+      "Customer Support": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 1
+      },
+      "Hygiene & Safety": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 1
+      },
+      "Pricing & Transparency": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 1
+      },
+      "Punctuality & Equipment": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 2
+      },
+      "Service Quality": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "support": 2
+      }
+    }
+  },
+  "sentiment_metrics": {
+    "accuracy": 0.375,
+    "macro_f1": 0.3556,
+    "total_samples": 8,
+    "per_class": {
+      "Negative": {
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1_score": 0.4,
+        "support": 4
+      },
+      "Neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "support": 1
+      },
+      "Positive": {
+        "precision": 0.6667,
+        "recall": 0.6667,
+        "f1_score": 0.6667,
+        "support": 3
+      }
+    }
+  },
+  "mismatches": [
+    {
+      "id": "REV-003",
+      "text": "I was charged extra INR 500 without prior estimate or explanation on the invoice.",
+      "expected": {
+        "category": "Pricing & Transparency",
+        "sentiment": "Negative"
+      },
+      "predicted": {
+        "category": "Pricing & Transparency",
+        "sentiment": "Neutral"
+      }
+    },
+    {
+      "id": "REV-004",
+      "text": "Good haircut at home, though the stylist could have used cleaner styling sheets.",
+      "expected": {
+        "category": "Hygiene & Safety",
+        "sentiment": "Neutral"
+      },
+      "predicted": {
+        "category": "Hygiene & Safety",
+        "sentiment": "Positive"
+      }
+    },
+    {
+      "id": "REV-005",
+      "text": "Instant booking confirmed and professional arrived exactly on time with full uniform and kit.",
+      "expected": {
+        "category": "Punctuality & Equipment",
+        "sentiment": "Positive"
+      },
+      "predicted": {
+        "category": "Punctuality & Equipment",
+        "sentiment": "Neutral"
+      }
+    },
+    {
+      "id": "REV-007",
+      "text": "Customer support took 3 days to respond to my refund request for a cancelled slot.",
+      "expected": {
+        "category": "Customer Support",
+        "sentiment": "Negative"
+      },
+      "predicted": {
+        "category": "Customer Support",
+        "sentiment": "Neutral"
+      }
+    },
+    {
+      "id": "REV-008",
+      "text": "App kept crashing when I tried to pay using UPI during the checkout step.",
+      "expected": {
+        "category": "App & Tech Experience",
+        "sentiment": "Negative"
+      },
+      "predicted": {
+        "category": "App & Tech Experience",
+        "sentiment": "Neutral"
+      }
+    }
+  ]
+}

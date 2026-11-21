@@ -1,0 +1,212 @@
+[
+  {
+    "id": "SCRAPED-0001",
+    "service": "Plumbing",
+    "rating": 5,
+    "text": "Great experience with Plumbing. The professional was on time and very skilled.",
+    "timestamp": 1795179147
+  },
+  {
+    "id": "SCRAPED-0002",
+    "service": "Carpentry",
+    "rating": 2,
+    "text": "Overcharged for Carpentry without prior estimate. Very disappointed.",
+    "timestamp": 1794945941
+  },
+  {
+    "id": "SCRAPED-0003",
+    "service": "Appliance Repair",
+    "rating": 5,
+    "text": "Superb job done on Appliance Repair. Fixed the issue quickly and cleaned up afterwards.",
+    "timestamp": 1795036202
+  },
+  {
+    "id": "SCRAPED-0004",
+    "service": "Plumbing",
+    "rating": 1,
+    "text": "Overcharged for Plumbing without prior estimate. Very disappointed.",
+    "timestamp": 1795208873
+  },
+  {
+    "id": "SCRAPED-0005",
+    "service": "Plumbing",
+    "rating": 5,
+    "text": "Flawless booking and execution for Plumbing. Highly recommend Urban Company.",
+    "timestamp": 1795227421
+  },
+  {
+    "id": "SCRAPED-0006",
+    "service": "Plumbing",
+    "rating": 3,
+    "text": "Average experience with Plumbing. Timings were slightly pushed back.",
+    "timestamp": 1794795328
+  },
+  {
+    "id": "SCRAPED-0007",
+    "service": "Carpentry",
+    "rating": 4,
+    "text": "Flawless booking and execution for Carpentry. Highly recommend Urban Company.",
+    "timestamp": 1794917644
+  },
+  {
+    "id": "SCRAPED-0008",
+    "service": "Plumbing",
+    "rating": 5,
+    "text": "Superb job done on Plumbing. Fixed the issue quickly and cleaned up afterwards.",
+    "timestamp": 1794806609
+  },
+  {
+    "id": "SCRAPED-0009",
+    "service": "Bathroom Deep Cleaning",
+    "rating": 1,
+    "text": "Poor quality work on Bathroom Deep Cleaning. The issue reoccurred the very next day.",
+    "timestamp": 1794889784
+  },
+  {
+    "id": "SCRAPED-0010",
+    "service": "Appliance Repair",
+    "rating": 4,
+    "text": "Flawless booking and execution for Appliance Repair. Highly recommend Urban Company.",
+    "timestamp": 1795194227
+  },
+  {
+    "id": "SCRAPED-0011",
+    "service": "Bathroom Deep Cleaning",
+    "rating": 1,
+    "text": "Terrible experience with Bathroom Deep Cleaning. Professional arrived 1 hour late without tools.",
+    "timestamp": 1795167921
+  },
+  {
+    "id": "SCRAPED-0012",
+    "service": "Carpentry",
+    "rating": 1,
+    "text": "Poor quality work on Carpentry. The issue reoccurred the very next day.",
+    "timestamp": 1795224433
+  },
+  {
+    "id": "SCRAPED-0013",
+    "service": "AC Repair",
+    "rating": 2,
+    "text": "Customer support took forever to handle my complaint regarding AC Repair.",
+    "timestamp": 1795138084
+  },
+  {
+    "id": "SCRAPED-0014",
+    "service": "AC Repair",
+    "rating": 2,
+    "text": "Overcharged for AC Repair without prior estimate. Very disappointed.",
+    "timestamp": 1794958667
+  },
+  {
+    "id": "SCRAPED-0015",
+    "service": "AC Repair",
+    "rating": 3,
+    "text": "Did the job for AC Repair, but rates seem a bit higher compared to local market.",
+    "timestamp": 1795038959
+  },
+  {
+    "id": "SCRAPED-0016",
+    "service": "Bathroom Deep Cleaning",
+    "rating": 5,
+    "text": "Loved the Bathroom Deep Cleaning! Neat, hygienic, and very polite technician.",
+    "timestamp": 1795100816
+  },
+  {
+    "id": "SCRAPED-0017",
+    "service": "Appliance Repair",
+    "rating": 3,
+    "text": "Average experience with Appliance Repair. Timings were slightly pushed back.",
+    "timestamp": 1794797102
+  },
+  {
+    "id": "SCRAPED-0018",
+    "service": "Salon at Home",
+    "rating": 5,
+    "text": "Superb job done on Salon at Home. Fixed the issue quickly and cleaned up afterwards.",
+    "timestamp": 1794908657
+  },
+  {
+    "id": "SCRAPED-0019",
+    "service": "AC Repair",
+    "rating": 3,
+    "text": "AC Repair was okay, standard job done but nothing extraordinary.",
+    "timestamp": 1794969858
+  },
+  {
+    "id": "SCRAPED-0020",
+    "service": "Appliance Repair",
+    "rating": 3,
+    "text": "Average experience with Appliance Repair. Timings were slightly pushed back.",
+    "timestamp": 1795139130
+  },
+  {
+    "id": "SCRAPED-0021",
+    "service": "Plumbing",
+    "rating": 2,
+    "text": "Poor quality work on Plumbing. The issue reoccurred the very next day.",
+    "timestamp": 1794823570
+  },
+  {
+    "id": "SCRAPED-0022",
+    "service": "Salon at Home",
+    "rating": 3,
+    "text": "Average experience with Salon at Home. Timings were slightly pushed back.",
+    "timestamp": 1794860448
+  },
+  {
+    "id": "SCRAPED-0023",
+    "service": "Bathroom Deep Cleaning",
+    "rating": 1,
+    "text": "Terrible experience with Bathroom Deep Cleaning. Professional arrived 1 hour late without tools.",
+    "timestamp": 1795215378
+  },
+  {
+    "id": "SCRAPED-0024",
+    "service": "Salon at Home",
+    "rating": 5,
+    "text": "Great experience with Salon at Home. The professional was on time and very skilled.",
+    "timestamp": 1794961159
+  },
+  {
+    "id": "SCRAPED-0025",
+    "service": "AC Repair",
+    "rating": 5,
+    "text": "Flawless booking and execution for AC Repair. Highly recommend Urban Company.",
+    "timestamp": 1795029479
+  },
+  {
+    "id": "SCRAPED-0026",
+    "service": "Carpentry",
+    "rating": 1,
+    "text": "Customer support took forever to handle my complaint regarding Carpentry.",
+    "timestamp": 1794786592
+  },
+  {
+    "id": "SCRAPED-0027",
+    "service": "Plumbing",
+    "rating": 2,
+    "text": "Poor quality work on Plumbing. The issue reoccurred the very next day.",
+    "timestamp": 1794848037
+  },
+  {
+    "id": "SCRAPED-0028",
+    "service": "Appliance Repair",
+    "rating": 3,
+    "text": "Average experience with Appliance Repair. Timings were slightly pushed back.",
+    "timestamp": 1794879525
+  },
+  {
+    "id": "SCRAPED-0029",
+    "service": "Appliance Repair",
+    "rating": 2,
+    "text": "Overcharged for Appliance Repair without prior estimate. Very disappointed.",
+    "timestamp": 1795242710
+  },
+  {
+    "id": "SCRAPED-0030",
+    "service": "Salon at Home",
+    "rating": 3,
+    "text": "Did the job for Salon at Home, but rates seem a bit higher compared to local market.",
+    "timestamp": 1794782052
+  }
+]
