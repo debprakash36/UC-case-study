@@ -12,7 +12,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import {
-  Filter,
   CheckCircle2,
   ChevronDown,
   ChevronUp,
@@ -45,56 +44,35 @@ interface BarClickParam {
 
 interface OpportunitySizingTabProps {
   records: FeedbackRecord[];
+  totalBaseCount?: number;
   onSelectThemeFilter: (theme: OpportunityTheme) => void;
 }
 
 export function OpportunitySizingTab({
   records,
+  totalBaseCount = records.length,
   onSelectThemeFilter,
 }: OpportunitySizingTabProps) {
-  // Controls
-  const [excludeBadExperiences, setExcludeBadExperiences] = useState(false);
-  const [consumerControllableOnly, setConsumerControllableOnly] = useState(true);
   const [methodologyExpanded, setMethodologyExpanded] = useState(true);
 
-  // Dynamic Filtering
-  const filteredRecords = useMemo(() => {
-    return records.filter((rec) => {
-      // 1. Negativity Bias Control: Exclude 1-2 star / Negative sentiment / Out-of-scope service failure
-      if (excludeBadExperiences) {
-        if (rec.rating_or_upvotes && rec.rating_or_upvotes <= 2) return false;
-        if (rec.sentiment === "Negative") return false;
-        if (rec.opportunity_theme === "Service Quality / Partner Ops (Out of Scope)") return false;
-      }
-
-      // 2. Scope Filter: Consumer Growth Controllable Only
-      if (consumerControllableOnly) {
-        if (!rec.consumer_growth_controllable) return false;
-        if (rec.opportunity_theme.includes("(Out of Scope)")) return false;
-      }
-
-      return true;
-    });
-  }, [records, excludeBadExperiences, consumerControllableOnly]);
-
   // KPIs
-  const totalCount = records.length;
-  const filteredCount = filteredRecords.length;
+  const totalCount = totalBaseCount;
+  const filteredCount = records.length;
   const filteredPct = totalCount > 0 ? ((filteredCount / totalCount) * 100).toFixed(1) : "0";
 
   const brandedCount = useMemo(
-    () => filteredRecords.filter((r) => r.query_type === "branded_uc").length,
-    [filteredRecords]
+    () => records.filter((r) => r.query_type === "branded_uc").length,
+    [records]
   );
   const nonBrandedCount = useMemo(
-    () => filteredRecords.filter((r) => r.query_type === "non_branded_home_service").length,
-    [filteredRecords]
+    () => records.filter((r) => r.query_type === "non_branded_home_service").length,
+    [records]
   );
 
   // Top Actionable Theme
   const themeCounts = useMemo(() => {
     const map: Record<string, { branded: number; nonBranded: number; total: number }> = {};
-    for (const r of filteredRecords) {
+    for (const r of records) {
       if (!map[r.opportunity_theme]) {
         map[r.opportunity_theme] = { branded: 0, nonBranded: 0, total: 0 };
       }
@@ -113,14 +91,14 @@ export function OpportunitySizingTab({
         total: counts.total,
       }))
       .sort((a, b) => b.total - a.total);
-  }, [filteredRecords]);
+  }, [records]);
 
   const topTheme = themeCounts.length > 0 ? themeCounts[0] : null;
 
   // Workaround Counts
   const workaroundData = useMemo(() => {
     const map: Record<string, { branded: number; nonBranded: number; total: number }> = {};
-    for (const r of filteredRecords) {
+    for (const r of records) {
       if (r.workaround_mentioned === "None") continue; // Focus on explicit workarounds
       if (!map[r.workaround_mentioned]) {
         map[r.workaround_mentioned] = { branded: 0, nonBranded: 0, total: 0 };
@@ -140,19 +118,20 @@ export function OpportunitySizingTab({
         total: counts.total,
       }))
       .sort((a, b) => b.total - a.total);
-  }, [filteredRecords]);
+  }, [records]);
 
   const topWorkaround = workaroundData.length > 0 ? workaroundData[0] : null;
 
   // Service Category x Sentiment Stacked Data
   const serviceSentimentData = useMemo(() => {
     const map: Record<string, { Positive: number; Neutral: number; Negative: number }> = {};
-    for (const r of filteredRecords) {
-      if (!map[r.service_category]) {
-        map[r.service_category] = { Positive: 0, Neutral: 0, Negative: 0 };
+    for (const r of records) {
+      const cat = r.uc_vertical || r.service_category;
+      if (!map[cat]) {
+        map[cat] = { Positive: 0, Neutral: 0, Negative: 0 };
       }
-      map[r.service_category][r.sentiment] =
-        (map[r.service_category][r.sentiment] || 0) + 1;
+      map[cat][r.sentiment] =
+        (map[cat][r.sentiment] || 0) + 1;
     }
     return Object.entries(map)
       .map(([category, counts]) => ({
@@ -163,75 +142,12 @@ export function OpportunitySizingTab({
         total: counts.Positive + counts.Neutral + counts.Negative,
       }))
       .sort((a, b) => b.total - a.total)
-      .slice(0, 6);
-  }, [filteredRecords]);
+      .slice(0, 8);
+  }, [records]);
 
   return (
     <div className="space-y-6">
-      {/* 1. Interactive Bias & Scope Control Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-5 transition-all">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
-              <Filter className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                Discovery Scope & Bias Calibration Bar
-                <span className="text-[11px] font-normal px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                  Dynamic Recalculation
-                </span>
-              </h2>
-              <p className="text-xs text-slate-500">
-                Isolate consumer product levers from partner operational failures and price complaints.
-              </p>
-            </div>
-          </div>
-
-          {/* Toggle Switches */}
-          <div className="flex flex-wrap items-center gap-4 text-xs font-medium">
-            {/* Toggle 1: Negativity Bias Control */}
-            <label className="flex items-center gap-2.5 cursor-pointer bg-slate-50 hover:bg-slate-100/80 px-3.5 py-2 rounded-xl border border-slate-200/80 transition-all select-none">
-              <input
-                type="checkbox"
-                checked={excludeBadExperiences}
-                onChange={(e) => setExcludeBadExperiences(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600 relative" />
-              <div>
-                <span className="text-slate-900 font-semibold block">
-                  Exclude Bad Experiences
-                </span>
-                <span className="text-[10px] text-slate-500 font-normal">
-                  Negativity Bias Control (3★+ or Neutral/Positive)
-                </span>
-              </div>
-            </label>
-
-            {/* Toggle 2: Scope Filter */}
-            <label className="flex items-center gap-2.5 cursor-pointer bg-slate-50 hover:bg-slate-100/80 px-3.5 py-2 rounded-xl border border-slate-200/80 transition-all select-none">
-              <input
-                type="checkbox"
-                checked={consumerControllableOnly}
-                onChange={(e) => setConsumerControllableOnly(e.target.checked)}
-                className="sr-only peer"
-              />
-              <div className="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-600 relative" />
-              <div>
-                <span className="text-slate-900 font-semibold block">
-                  Consumer Growth Controllable Only
-                </span>
-                <span className="text-[10px] text-teal-700 font-normal">
-                  Hides Partner Ops & Price Complaints
-                </span>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Methodology & Silent Churn Callout Banner (Collapsible) */}
+      {/* 1. Methodology & Silent Churn Callout Banner (Collapsible) */}
       <div className="bg-gradient-to-r from-indigo-50/70 via-slate-50 to-teal-50/60 rounded-2xl border border-indigo-100/80 p-4 shadow-sm transition-all">
         <button
           type="button"
@@ -303,9 +219,7 @@ export function OpportunitySizingTab({
               </span>
             </div>
             <p className="text-[11px] text-slate-500 mt-1">
-              {consumerControllableOnly
-                ? "Controllable by product features"
-                : "All records under current bias setting"}
+              Active records under current calibration
             </p>
           </div>
         </div>

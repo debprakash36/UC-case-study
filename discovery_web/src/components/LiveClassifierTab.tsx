@@ -9,6 +9,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { Sentiment, ServiceCategory, OpportunityTheme, WorkaroundMentioned } from "@/types/feedback";
+import { mapToUcVertical } from "@/utils/ucVerticals";
 
 interface ClassificationResult {
   sentiment: Sentiment;
@@ -35,6 +36,11 @@ const SAMPLE_SCENARIOS = [
     title: "3. Forgetting Deep Clean Until Diwali",
     tag: "Maintenance Reminder Gap",
     text: "We only remember to book kitchen deep cleaning and sofa shampooing once a year right before Diwali or when relatives visit. Would be really helpful if the app automatically reminded us every 4 to 6 months with pre-saved preferences.",
+  },
+  {
+    title: "4. Insta Help Maid Scheduling Issue",
+    tag: "Out of Scope (Insta Help)",
+    text: "Booked 2-hour cooking and utensils cleaning on Insta Help yesterday morning. The house help arrived 45 minutes late and left early. Daily maid services need much better scheduling reliability.",
   },
 ];
 
@@ -184,120 +190,146 @@ export function LiveClassifierTab() {
         {/* Right Pane: Diagnostic Result Card (7 Cols) */}
         <div className="lg:col-span-6 space-y-4">
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm min-h-[420px] flex flex-col justify-between">
-            {result ? (
-              <div className="space-y-4">
-                {/* Result Header & In/Out-of-Scope Badge */}
-                <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
-                      AI Diagnostic Result
-                    </span>
-                    <h3 className="text-sm font-bold text-slate-900 mt-0.5">
-                      Structured Classification Breakdown
-                    </h3>
-                  </div>
+            {result ? (() => {
+              const classifiedVertical = mapToUcVertical({
+                text: inputText,
+                summary: result.summary,
+                service_category: result.service_category,
+              });
+              const isInScope =
+                result.consumer_growth_controllable &&
+                !result.opportunity_theme.includes("(Out of Scope)") &&
+                classifiedVertical !== "Insta Help (Out of Scope)";
 
-                  {result.consumer_growth_controllable && !result.opportunity_theme.includes("(Out of Scope)") ? (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200/80">
-                      <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
-                      In Scope (Consumer Growth)
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/80">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
-                      Out of Scope (Pricing / Ops)
-                    </span>
-                  )}
-                </div>
-
-                {/* Analytical Summary Box */}
-                <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200/70 space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 flex items-center gap-1">
-                    <Lightbulb className="w-3 h-3" />
-                    1-Line Product Insight Summary
-                  </span>
-                  <p className="text-xs text-slate-800 font-medium leading-relaxed italic">
-                    &ldquo;{result.summary}&rdquo;
-                  </p>
-                </div>
-
-                {/* Grid of Diagnostic Pillars */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  {/* Opportunity Theme */}
-                  <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
-                    <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
-                      Opportunity Theme
-                    </span>
-                    <span className="text-xs font-bold text-slate-900 block leading-tight">
-                      {result.opportunity_theme}
-                    </span>
-                  </div>
-
-                  {/* Workaround Detected */}
-                  <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
-                    <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
-                      Workaround Detected
-                    </span>
-                    <span className="text-xs font-bold text-slate-900 block">
-                      {result.workaround_mentioned === "None"
-                        ? "None (Direct app interaction)"
-                        : result.workaround_mentioned}
-                    </span>
-                  </div>
-
-                  {/* Service Category */}
-                  <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
-                    <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
-                      Service Category
-                    </span>
-                    <span className="text-xs font-bold text-slate-900 block">
-                      {result.service_category}
-                    </span>
-                  </div>
-
-                  {/* Sentiment & Specific Pain Point */}
-                  <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
-                    <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
-                      Sentiment & Root Friction
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold ${
-                          result.sentiment === "Positive"
-                            ? "bg-emerald-50 text-emerald-700"
-                            : result.sentiment === "Negative"
-                            ? "bg-rose-50 text-rose-700"
-                            : "bg-slate-100 text-slate-700"
-                        }`}
-                      >
-                        {result.sentiment}
+              return (
+                <div className="space-y-4">
+                  {/* Result Header & In/Out-of-Scope Badge */}
+                  <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+                        AI Diagnostic Result
                       </span>
-                      <span className="text-xs text-slate-700 truncate font-medium">
-                        {result.pain_point}
+                      <h3 className="text-sm font-bold text-slate-900 mt-0.5">
+                        Structured Classification Breakdown
+                      </h3>
+                    </div>
+
+                    {isInScope ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200/80">
+                        <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
+                        In Scope (Consumer Growth)
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/80">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                        Out of Scope {classifiedVertical === "Insta Help (Out of Scope)" ? "(Insta Help)" : "(Pricing / Ops)"}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Analytical Summary Box */}
+                  <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200/70 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 flex items-center gap-1">
+                      <Lightbulb className="w-3 h-3" />
+                      1-Line Product Insight Summary
+                    </span>
+                    <p className="text-xs text-slate-800 font-medium leading-relaxed italic">
+                      &ldquo;{result.summary}&rdquo;
+                    </p>
+                  </div>
+
+                  {/* Grid of Diagnostic Pillars */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    {/* UC Service Vertical */}
+                    <div className={`p-3 rounded-xl border space-y-1 ${
+                      classifiedVertical === "Insta Help (Out of Scope)"
+                        ? "bg-amber-50/80 border-amber-200"
+                        : "bg-indigo-50/50 border-indigo-100"
+                    }`}>
+                      <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
+                        UC Service Vertical
+                      </span>
+                      <span className={`text-xs font-bold block ${
+                        classifiedVertical === "Insta Help (Out of Scope)"
+                          ? "text-amber-900"
+                          : "text-indigo-950"
+                      }`}>
+                        {classifiedVertical}
                       </span>
                     </div>
+
+                    {/* Opportunity Theme */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
+                      <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
+                        Opportunity Theme
+                      </span>
+                      <span className="text-xs font-bold text-slate-900 block leading-tight">
+                        {result.opportunity_theme}
+                      </span>
+                    </div>
+
+                    {/* Workaround Detected */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
+                      <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
+                        Workaround Detected
+                      </span>
+                      <span className="text-xs font-bold text-slate-900 block">
+                        {result.workaround_mentioned === "None"
+                          ? "None (Direct app interaction)"
+                          : result.workaround_mentioned}
+                      </span>
+                    </div>
+
+                    {/* Raw Service Category & Sentiment */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/70 space-y-1">
+                      <span className="text-[10px] font-semibold text-slate-500 block uppercase tracking-wider">
+                        Category & Sentiment
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold ${
+                            result.sentiment === "Positive"
+                              ? "bg-emerald-50 text-emerald-700"
+                              : result.sentiment === "Negative"
+                              ? "bg-rose-50 text-rose-700"
+                              : "bg-slate-100 text-slate-700"
+                          }`}
+                        >
+                          {result.sentiment}
+                        </span>
+                        <span className="text-xs text-slate-700 truncate font-medium">
+                          {result.service_category}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Scope Explanation Note */}
+                  <div className="pt-2 text-[11px] text-slate-500 border-t border-slate-100 leading-relaxed">
+                    {isInScope ? (
+                      <span className="text-teal-800">
+                        ✔ <strong>Controllable Scope Verified:</strong> This friction can be
+                        addressed via customer-facing product enhancements (e.g., proactive
+                        rebooking reminders, address UX, transparency check, cross-sell discovery)
+                        without requiring field partner operational restructuring or discount subsidies.
+                      </span>
+                    ) : classifiedVertical === "Insta Help (Out of Scope)" ? (
+                      <span className="text-amber-800">
+                        ⚠ <strong>Insta Help Excluded from Scope:</strong> On-demand maid / house help
+                        services are explicitly out of scope per case study constraints (focus is on core
+                        repeat verticals: AC/Appliance, Cleaning, Salon, Electricians/Plumbers/Carpenters).
+                      </span>
+                    ) : (
+                      <span className="text-amber-800">
+                        ⚠ <strong>Excluded from Consumer Growth Scope:</strong> This complaint
+                        pertains to partner execution, craftsmanship, or pricing tariffs that cannot
+                        be reliably solved solely through consumer UX mechanisms.
+                      </span>
+                    )}
                   </div>
                 </div>
-
-                {/* Scope Explanation Note */}
-                <div className="pt-2 text-[11px] text-slate-500 border-t border-slate-100 leading-relaxed">
-                  {result.consumer_growth_controllable && !result.opportunity_theme.includes("(Out of Scope)") ? (
-                    <span className="text-teal-800">
-                      ✔ <strong>Controllable Scope Verified:</strong> This friction can be
-                      addressed via customer-facing product enhancements (e.g., proactive
-                      rebooking reminders, address UX, transparency check, cross-sell discovery)
-                      without requiring field partner operational restructuring or discount subsidies.
-                    </span>
-                  ) : (
-                    <span className="text-amber-800">
-                      ⚠ <strong>Excluded from Consumer Growth Scope:</strong> This complaint
-                      pertains to partner execution, craftsmanship, or pricing tariffs that cannot
-                      be reliably solved solely through consumer UX mechanisms.
-                    </span>
-                  )}
-                </div>
-              </div>
-            ) : (
+              );
+            })() : (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3 my-auto">
                 <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
                   <Sparkles className="w-6 h-6" />

@@ -112,7 +112,10 @@ export function VerbatimExplorerTab({
       }
 
       // 7. Controllable Scope Filter
-      const isControllable = rec.consumer_growth_controllable && !rec.opportunity_theme.includes("(Out of Scope)");
+      const isControllable =
+        rec.consumer_growth_controllable &&
+        !rec.opportunity_theme.includes("(Out of Scope)") &&
+        rec.uc_vertical !== "Insta Help (Out of Scope)";
       if (selectedControllable === "true" && !isControllable) {
         return false;
       }
@@ -356,6 +359,17 @@ export function VerbatimExplorerTab({
                     {item.query_type === "branded_uc" ? "Urban Company" : "Cross-Industry"}
                   </span>
 
+                  {/* UC Service Vertical Badge */}
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${
+                      item.uc_vertical === "Insta Help (Out of Scope)"
+                        ? "bg-amber-50 text-amber-800 border-amber-200"
+                        : "bg-slate-100 text-slate-700 border-slate-200"
+                    }`}
+                  >
+                    {item.uc_vertical || item.service_category}
+                  </span>
+
                   {/* Rating / Upvote Pill */}
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200/70">
                     <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
@@ -378,7 +392,9 @@ export function VerbatimExplorerTab({
 
                 {/* Scope Indicator Badge */}
                 <div>
-                  {item.consumer_growth_controllable && !item.opportunity_theme.includes("(Out of Scope)") ? (
+                  {item.consumer_growth_controllable &&
+                  !item.opportunity_theme.includes("(Out of Scope)") &&
+                  item.uc_vertical !== "Insta Help (Out of Scope)" ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200/80">
                       <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
                       In Scope (Product)

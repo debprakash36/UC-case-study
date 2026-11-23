@@ -1,3 +1,5 @@
+import type { UcVertical } from '@/utils/ucVerticals';
+
 export type Sentiment = 'Positive' | 'Negative' | 'Neutral';
 
 export type QueryType = 'branded_uc' | 'non_branded_home_service';
@@ -44,6 +46,7 @@ export interface FeedbackRecord {
   opportunity_theme: OpportunityTheme;
   workaround_mentioned: WorkaroundMentioned;
   consumer_growth_controllable: boolean;
+  uc_vertical?: UcVertical;
 }
 
 export interface FeedbackStats {
