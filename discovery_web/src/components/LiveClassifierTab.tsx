@@ -197,7 +197,7 @@ export function LiveClassifierTab() {
                     </h3>
                   </div>
 
-                  {result.consumer_growth_controllable ? (
+                  {result.consumer_growth_controllable && !result.opportunity_theme.includes("(Out of Scope)") ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200/80">
                       <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
                       In Scope (Consumer Growth)
@@ -281,7 +281,7 @@ export function LiveClassifierTab() {
 
                 {/* Scope Explanation Note */}
                 <div className="pt-2 text-[11px] text-slate-500 border-t border-slate-100 leading-relaxed">
-                  {result.consumer_growth_controllable ? (
+                  {result.consumer_growth_controllable && !result.opportunity_theme.includes("(Out of Scope)") ? (
                     <span className="text-teal-800">
                       ✔ <strong>Controllable Scope Verified:</strong> This friction can be
                       addressed via customer-facing product enhancements (e.g., proactive

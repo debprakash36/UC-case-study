@@ -25,6 +25,24 @@ import {
 } from "lucide-react";
 import { FeedbackRecord, OpportunityTheme } from "@/types/feedback";
 
+interface ChartClickParam {
+  activeLabel?: string;
+  activePayload?: Array<{
+    payload?: {
+      theme?: OpportunityTheme;
+      [key: string]: unknown;
+    };
+  }>;
+}
+
+interface BarClickParam {
+  theme?: OpportunityTheme;
+  payload?: {
+    theme?: OpportunityTheme;
+    [key: string]: unknown;
+  };
+}
+
 interface OpportunitySizingTabProps {
   records: FeedbackRecord[];
   onSelectThemeFilter: (theme: OpportunityTheme) => void;
@@ -52,6 +70,7 @@ export function OpportunitySizingTab({
       // 2. Scope Filter: Consumer Growth Controllable Only
       if (consumerControllableOnly) {
         if (!rec.consumer_growth_controllable) return false;
+        if (rec.opportunity_theme.includes("(Out of Scope)")) return false;
       }
 
       return true;
@@ -373,17 +392,20 @@ export function OpportunitySizingTab({
           </div>
         </div>
 
-        <div className="h-80 sm:h-96 mt-4">
+        <div className="h-80 sm:h-96 mt-4 cursor-pointer [&_svg]:outline-none [&_.recharts-wrapper]:outline-none [&_.recharts-surface]:outline-none">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={themeCounts}
               layout="vertical"
               margin={{ top: 10, right: 30, left: 160, bottom: 10 }}
+              className="cursor-pointer [&_svg]:outline-none [&_.recharts-wrapper]:outline-none"
               onClick={(state) => {
-                const s = state as { activePayload?: Array<{ payload: { theme: OpportunityTheme } }> };
-                if (s && s.activePayload && s.activePayload.length > 0) {
-                  const clickedTheme = s.activePayload[0].payload.theme;
-                  onSelectThemeFilter(clickedTheme);
+                const s = state as ChartClickParam | null;
+                const clickedTheme =
+                  s?.activeLabel ||
+                  s?.activePayload?.[0]?.payload?.theme;
+                if (clickedTheme) {
+                  onSelectThemeFilter(clickedTheme as OpportunityTheme);
                 }
               }}
             >
@@ -396,8 +418,19 @@ export function OpportunitySizingTab({
                 fontSize={11}
                 tickLine={false}
                 width={150}
+                className="cursor-pointer"
+                onClick={(e) => {
+                  const ev = e as { value?: string; name?: string } | null;
+                  const clickedTheme = ev?.value ?? ev?.name;
+                  if (clickedTheme) {
+                    onSelectThemeFilter(clickedTheme as OpportunityTheme);
+                  }
+                }}
               />
-              <Tooltip content={<CustomOpportunityTooltip />} />
+              <Tooltip
+                content={<CustomOpportunityTooltip />}
+                cursor={{ fill: "rgba(99, 102, 241, 0.08)", cursor: "pointer" }}
+              />
               <Bar
                 dataKey="branded"
                 name="Urban Company"
@@ -405,6 +438,14 @@ export function OpportunitySizingTab({
                 stackId="theme"
                 radius={[0, 0, 0, 0]}
                 cursor="pointer"
+                className="cursor-pointer"
+                onClick={(data) => {
+                  const d = data as BarClickParam | null;
+                  const clickedTheme = d?.payload?.theme ?? d?.theme;
+                  if (clickedTheme) {
+                    onSelectThemeFilter(clickedTheme as OpportunityTheme);
+                  }
+                }}
               />
               <Bar
                 dataKey="nonBranded"
@@ -413,6 +454,14 @@ export function OpportunitySizingTab({
                 stackId="theme"
                 radius={[0, 4, 4, 0]}
                 cursor="pointer"
+                className="cursor-pointer"
+                onClick={(data) => {
+                  const d = data as BarClickParam | null;
+                  const clickedTheme = d?.payload?.theme ?? d?.theme;
+                  if (clickedTheme) {
+                    onSelectThemeFilter(clickedTheme as OpportunityTheme);
+                  }
+                }}
               />
             </BarChart>
           </ResponsiveContainer>

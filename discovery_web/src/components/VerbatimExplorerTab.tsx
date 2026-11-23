@@ -112,10 +112,11 @@ export function VerbatimExplorerTab({
       }
 
       // 7. Controllable Scope Filter
-      if (selectedControllable === "true" && !rec.consumer_growth_controllable) {
+      const isControllable = rec.consumer_growth_controllable && !rec.opportunity_theme.includes("(Out of Scope)");
+      if (selectedControllable === "true" && !isControllable) {
         return false;
       }
-      if (selectedControllable === "false" && rec.consumer_growth_controllable) {
+      if (selectedControllable === "false" && isControllable) {
         return false;
       }
 
@@ -377,7 +378,7 @@ export function VerbatimExplorerTab({
 
                 {/* Scope Indicator Badge */}
                 <div>
-                  {item.consumer_growth_controllable ? (
+                  {item.consumer_growth_controllable && !item.opportunity_theme.includes("(Out of Scope)") ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200/80">
                       <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
                       In Scope (Product)

@@ -13,6 +13,7 @@ export default function Home() {
 
   const [activeTab, setActiveTab] = useState<TabKey>("sizing");
   const [selectedThemeFilter, setSelectedThemeFilter] = useState<OpportunityTheme | null>(null);
+  const [drilldownKey, setDrilldownKey] = useState<number>(0);
 
   const totalCount = records.length;
   const brandedCount = records.filter((r) => r.query_type === "branded_uc").length;
@@ -20,7 +21,11 @@ export default function Home() {
 
   const handleSelectThemeFromChart = (theme: OpportunityTheme) => {
     setSelectedThemeFilter(theme);
+    setDrilldownKey((k) => k + 1);
     setActiveTab("explorer");
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -47,6 +52,7 @@ export default function Home() {
 
         {activeTab === "explorer" && (
           <VerbatimExplorerTab
+            key={`explorer-${selectedThemeFilter || "all"}-${drilldownKey}`}
             records={records}
             initialThemeFilter={selectedThemeFilter}
             onClearInitialTheme={() => setSelectedThemeFilter(null)}
